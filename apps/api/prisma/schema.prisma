@@ -16,7 +16,6 @@ model User {
   lastName  String   
   email     String   @unique
   password  String   
-
   role Role
 
   createdAt DateTime @default(now())
@@ -25,9 +24,49 @@ model User {
   @@map("users")
 }
 
+
 enum Role {
   customer
   creator
+}
+
+model Event{
+  id Int @id @default(autoincrement())
+  title String
+  price Int
+
+  startDate DateTime @db.Date
+  endDate DateTime @db.Date
+
+  startTime DateTime @db.Time
+  endTime DateTime @db.Time
+  category Category
+  locationId Int 
+  location Location @relation(fields: [locationId],references: [id])
+  description String
+  ticketType String
+  capacity Int
+}
+
+enum Category{
+  Festival
+  Fair
+  Bazaar
+  Concert
+  Exhibition
+  Conference
+  Workshop
+  Attraction
+  Theme
+}
+
+model Location{
+  id Int @id @default(autoincrement())
+  name String?
+  address String?
+  city String?
+  url String?
+  event Event[]
 }
 
 
