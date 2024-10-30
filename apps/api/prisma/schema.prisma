@@ -11,12 +11,16 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  firstName String
-  lastName  String   
+  id        String   @id @default(uuid())  
   email     String   @unique
-  password  String   
-  role Role
+  password  String 
+  referralCode String
+  isVerified Boolean @default(false)
+  totalPoint Int 
+
+
+  referralPoint RefferalPoint[]
+  referralDiscount RefferalDiscount[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -24,15 +28,41 @@ model User {
   @@map("users")
 }
 
+model Creator {
+  id String @id @default(uuid())
+  email String @unique
+  password String
 
-enum Role {
-  customer
-  creator
+  banner String?
+  logo String?
+  url String?
+  name String?
+  phoneNumber Int?
+  address String?
+  aboutUs String?
+  twitter String?
+  instagram String?
+  facebook String?
+
+  event Event[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
 }
+
+model LegalInfo {
+  id Int @id @default(autoincrement())
+  idCardFile String?
+  idCard String?
+  name String?
+  address String?
+}
+
 
 model Event{
   id Int @id @default(autoincrement())
-  title String
+  name String
   price Int
 
   startDate DateTime @db.Date
@@ -40,34 +70,53 @@ model Event{
 
   startTime DateTime @db.Time
   endTime DateTime @db.Time
-  category Category
-  locationId Int 
-  location Location @relation(fields: [locationId],references: [id])
-  description String
-  ticketType String
-  capacity Int
-}
-
-enum Category{
-  Festival
-  Fair
-  Bazaar
-  Concert
-  Exhibition
-  Conference
-  Workshop
-  Attraction
-  Theme
-}
-
-model Location{
-  id Int @id @default(autoincrement())
-  name String?
+  
+  location String
   address String?
-  city String?
-  url String?
-  event Event[]
+  url String? 
+  description String
+  termsAndCondition String
+  capacity Int
+  isPaid Boolean
+
+  creatorId String
+  creator Creator @relation(fields: [creatorId], references: [id])
 }
+
+model EventTicket {
+  id Int @id @default(autoincrement())
+  name String
+
+}
+
+model RefferalPoint {
+  id Int @id @default(autoincrement())
+  point Int 
+  expiry DateTime
+  userId String
+  user User @relation(fields: [userId], references: [id])
+}
+
+model RefferalDiscount {
+  id Int @id @default(autoincrement())
+  discount Int
+  expiry DateTime
+  isUsed Boolean
+  userId String
+  user User @relation(fields: [userId], references: [id])
+}
+
+enum EventType {
+  online
+  offline
+}
+
+model Category{
+  id Int @id @default(autoincrement())
+  name String
+}
+
+
 
 
 
