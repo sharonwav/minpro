@@ -21,9 +21,12 @@ model User {
 
   referralPoint RefferalPoint[]
   referralDiscount RefferalDiscount[]
+  transaction Transaction[]
+  review Review[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
 
   @@map("users")
 }
@@ -46,9 +49,14 @@ model Creator {
 
   event Event[]
 
+  
+  legalInfo LegalInfo?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
 
+  @@map("creators")
 }
 
 model LegalInfo {
@@ -57,6 +65,15 @@ model LegalInfo {
   idCard String?
   name String?
   address String?
+
+  creatorId String @unique
+  creator Creator @relation(fields: [creatorId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+
+  @@map("legal_info")
 }
 
 
@@ -64,7 +81,6 @@ model Event{
   id Int @id @default(autoincrement())
   name String
   price Int
-
   startDate DateTime @db.Date
   endDate DateTime @db.Date
 
@@ -81,12 +97,95 @@ model Event{
 
   creatorId String
   creator Creator @relation(fields: [creatorId], references: [id])
+
+  eventTicket EventTicket[]
+  transaction Transaction[]
+  review Review[]
+
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+
+  @@map("events")
 }
 
 model EventTicket {
   id Int @id @default(autoincrement())
   name String
+  price Int  
+  available  Int
+  bookSeat Int
+  discount Int 
+  discountStart DateTime
+  discountExpiry DateTime
+  startDate DateTime
+  endDate DateTime
+  version String
 
+  eventId Int 
+  event Event @relation(fields: [eventId], references: [id])
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+
+  @@map("event_tickets")
+}
+
+model Transaction {
+  id Int @id @default(autoincrement())
+  orderNumber String @unique
+  totalPrice Int
+
+  eventId Int 
+  event Event @relation(fields: [eventId], references: [id]) 
+  userId String 
+  user User @relation(fields: [userId], references: [id])
+
+  transactionDetail TransactionDetail[]
+  transactionStatus TransactionStatus[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+
+  @@map("transactions")
+}
+
+model TransactionDetail {
+  id Int @id @default(autoincrement())
+  price Int
+  qty Int
+
+  transactionId Int
+  transaction Transaction @relation(fields: [transactionId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+
+  @@map("transaction_details")
+}
+
+model TransactionStatus {
+  id Int @id @default(autoincrement())
+  status Status
+
+  transactionId Int
+  transaction Transaction @relation(fields: [transactionId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+
+  @@map("transaction_status")
+}
+
+enum Status {
+  WAITING_FOR_PAYMENT
+  PAID
+  CANCELLED
 }
 
 model RefferalPoint {
@@ -95,6 +194,12 @@ model RefferalPoint {
   expiry DateTime
   userId String
   user User @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+
+  @@map("refferal_points")
 }
 
 model RefferalDiscount {
@@ -104,17 +209,43 @@ model RefferalDiscount {
   isUsed Boolean
   userId String
   user User @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+
+  @@map("referral_discounts")
 }
 
 enum EventType {
-  online
-  offline
+  ONLINE
+  OFFLINE
 }
 
 model Category{
   id Int @id @default(autoincrement())
   name String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+
+  @@map("category")
 }
+
+model Review {
+  comments String
+  rating Int
+  feedback String
+
+  userId String
+  user User @relation(fields: [userId], references: [id])
+  eventId Int
+  event Event @relation(fields: [eventId], references: [id])
+
+  @@id([userId, eventId])
+}
+
 
 
 
