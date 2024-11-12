@@ -16,6 +16,12 @@ module.exports = {
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		},
+		screens: {
+			'3xl': '1600px', // 3xl breakpoint
+			'4xl': '1920px', // 4xl breakpoint
+			'5xl': '2240px', // 5xl breakpoint
+			'6xl': '2560px', // 6xl breakpoint
+		},
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
