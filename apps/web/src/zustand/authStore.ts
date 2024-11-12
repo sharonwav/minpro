@@ -1,19 +1,32 @@
-import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
-const authStore = create(persist((set) => ({
-    token: '',
-    email: '',
+interface AuthState {
+  token: string;
+  email: string
+  setAuth: (authData: { token: string; email: string }) => void;
+  setKeepAuth: (authData: { token: string; email: string }) => void;
+  setAuthLogout: () => void;
+}
 
-    setAuth: ({token, email}: any) => set({token: token, email: email}),
-    setKeepAuth: ({email}: any) => set({email}),
-    setAuthSignOut: set({token: ''})
-}),
+const useAuthStore = create<AuthState>()(
+  persist(
+    (set) => ({
+      // Initial State
+      token: '',
+      email: '',
+
+
+      // Actions
+      setAuth: ({ token, email}) => set({ token, email }),
+      setKeepAuth: ({ token, email }) => set({ token, email }),
+      setAuthLogout: () => set({ token: '', email:'' }),
+    }),
     {
-        name: 'authToken',
-        partialize: (state: any) => ({token: state.token})
+      name: 'authToken', // Persist to localStorage
+      partialize: (state) => ({ token: state.token }), // Only persist token
     }
+  )
+);
 
-))
-
-export default authStore;
+export default useAuthStore
