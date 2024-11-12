@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 
 const Sidebar: React.FC<{isOpen: boolean; toggleSidebar: () => void}> = ({isOpen, toggleSidebar}) => {
   return (
@@ -7,10 +8,13 @@ const Sidebar: React.FC<{isOpen: boolean; toggleSidebar: () => void}> = ({isOpen
         <button
           type="button"
           onClick={toggleSidebar}
-          className="bg-white font-bold border border-black py-2 px-4 rounded-lg transition-transform duration-300 hover:border-b-4 hover:border-r-4"
+          className="bg-white font-bold border border-b-4 border-r-4 border-black py-2 px-3 rounded-lg transition-transform duration-300 focus:border-b focus:border-r text-sm"
         >
          (e)
         </button>
+        <Link href="/creator/create-event" className='border border-black px-4 py-2 rounded-lg hover:border-b-4 hover:border-r-4 text-sm'>
+          create an event
+        </Link>
       </div>
       <div
         className={`fixed left-0 top-0 h-full w-[20rem] border-r border-black p-6 transform transition-transform duration-300 ${

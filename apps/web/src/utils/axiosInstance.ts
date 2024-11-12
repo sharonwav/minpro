@@ -3,7 +3,7 @@ import authStore from "@/zustand/authStore";
 import { toast } from "react-toastify";
 
 const instance = axios.create({
-    baseURL: 'http://localhost:5000/api'
+    baseURL: 'http://localhost:8000/api'
 })
 
 instance.interceptors.request.use(

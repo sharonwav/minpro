@@ -9,6 +9,7 @@ import TanstackProvider from '@/providers/TanstackProvider';
 import AuthProvider from '@/providers/AuthProvider';
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css'
+import 'quill/dist/quill.snow.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -39,12 +40,12 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} ${vsBold.variable} ${vsBoldItalic.variable}`} >
         <TanstackProvider>
-            <AuthProvider>
+            {/* <AuthProvider> */}
               <ToastContainer />
                 <ClientLayout>
                   {children}
                 </ClientLayout>
-            </AuthProvider>
+            {/* </AuthProvider> */}
         </TanstackProvider>
       </body>
     </html>
