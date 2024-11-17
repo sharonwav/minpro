@@ -80,20 +80,17 @@ model LegalInfo {
 model Event{
   id Int @id @default(autoincrement())
   name String
-  price Int
+  image String
   startDate DateTime @db.Date
   endDate DateTime @db.Date
-
   startTime DateTime @db.Time
-  endTime DateTime @db.Time
-  
+  endTime DateTime @db.Time 
   location String
   address String?
   url String? 
   description String
   termsAndCondition String
-  capacity Int
-  isPaid Boolean
+  
 
   creatorId String
   creator Creator @relation(fields: [creatorId], references: [id])
@@ -112,18 +109,16 @@ model Event{
 
 model EventTicket {
   id Int @id @default(autoincrement())
-  name String
-  price Int  
-  available  Int
-  bookSeat Int
-  discount Int 
-  discountStart DateTime
-  discountExpiry DateTime
-  startDate DateTime
-  endDate DateTime
-  version String
+  ticketName String
+  qty Int
+  price Int?  
+  ticketDescription String
+  ticketStartDate DateTime
+  ticketEndDate DateTime
+  ticketStartTime DateTime
+  ticketEndTime DateTime
 
-  eventId Int 
+  eventId Int @default(0)
   event Event @relation(fields: [eventId], references: [id])
   
   createdAt DateTime @default(now())
