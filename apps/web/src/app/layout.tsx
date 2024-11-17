@@ -10,6 +10,8 @@ import AuthProvider from '@/providers/AuthProvider';
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css'
 import 'quill/dist/quill.snow.css';
+import 'antd/dist/reset.css'; 
+
 
 const inter = Inter({ subsets: ['latin'] });
 

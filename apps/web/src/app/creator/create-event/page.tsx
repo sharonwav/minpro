@@ -1,114 +1,166 @@
 'use client'
 import Link from "next/link"
 import React, { useState, useEffect } from 'react';
-import Quill from 'quill';
-import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import PaidTicket from "@/features/creator/components/PaidTicket";
+import PickDate from "@/features/creator/components/PickDate";
+import PickTime from "@/features/creator/components/PickTime";
+import PickLocation from "@/features/creator/components/PickLocation";
+import FreeTicket from "@/features/creator/components/FreeTicket";
+import Editor from "@/features/creator/components/Editor";
+import { Formik, Form, Field, ErrorMessage, useFormikContext } from "formik";
+import { createEventValidationSchema } from "@/features/creator/schemas/eventSchema";
+
+
 
 const CreateEventPage: React.FC  = () => {
+  const [activeTab, setActiveTab] = useState("category");
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
-  useEffect(() => {
-    const editor1Container = document.getElementById('editor1');
-    if (editor1Container && !editor1Container.querySelector('.ql-editor')) {
-      new Quill(editor1Container, {
-        theme: 'snow',
-        modules: {
-          toolbar: [
-            [{ header: [1, 2, false] }],
-            ['bold', 'italic', 'underline'],
-            ['link', 'image'],
-            [{ list: 'ordered' }, { list: 'bullet' }],
-          ],
-        },
-      });
-    }
+ 
 
-    const editor2Container = document.getElementById('editor2');
-    if (editor2Container && !editor2Container.querySelector('.ql-editor')) {
-      new Quill(editor2Container, {
-        theme: 'snow',
-        modules: {
-          toolbar: [
-            [{ header: [1, 2, false] }],
-            ['bold', 'italic', 'underline'],
-            ['link', 'image'],
-            [{ list: 'ordered' }, { list: 'bullet' }],
-          ],
-        },
-      });
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedImage(file);
     }
-  }, []);
+  };
+
 
 
   return (
     <main className="w-full h-screen z-10">
       <section className="m-auto w-full max-w-screen-xl min-h-min flex items-start justify-between mt-[10rem]">
-        <div className="w-2/4 min-h-min">
-          <div className="w-[30rem] h-[40rem] border border-black rounded-xl">
-            <div className="w-full h-[23rem] border-b border-black">
-            {/* PICTURE */}
+        <Formik
+          initialValues={{
+            name: '',
+            image: '',
+            startDate: '',
+            endDate: '',
+            startTime: '',
+            endTime: '',
+            location: '',
+            address: '',
+            url: '',
+            description: '',
+            termsAndContition: '',
+            ticketName: '',
+            qty: 0,
+            price: 0,
+            ticketDescription: '',
+            ticketStartDate: '',
+            ticketEndDate: '',
+            ticketStartTime: '',
+            ticketEndTime: ''
+          }}
+          validationSchema={createEventValidationSchema}
+          onSubmit={() => {
+
+          }}
+
+        >
+          {({values, setFieldValue}) => (
+            <Form className="w-full flex items-start justify-center">
+            <div className="w-2/4 min-h-min">
+              <div className="w-[30rem] h-[40rem] border border-black rounded-xl">
+              <div className="w-full h-[23rem] border-b border-black relative">
+                {/* PICTURE */}
+                {selectedImage ? (
+                  <img
+                    src={URL.createObjectURL(selectedImage)}
+                    alt="Event"
+                    className="h-full w-full object-cover rounded-t-xl"
+                  />
+                ) : (
+                  <div className="h-full w-full flex items-center justify-center text-gray-500">
+                    <p>No image selected</p>
+                  </div>
+                )}
+
+                <Field
+                  name="image"
+                  type="file"
+                  accept="image/*"
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    handleImageChange(e);
+                    setFieldValue("image", e.currentTarget.files?.[0] || null);
+                  }}
+                  className="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-auto text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 opacity-75 cursor-pointer"
+                />
+              </div>
+
+                <div className="min-w-min h-[17rem] p-3 flex flex-col justify-between relative gap-3">
+                  <Field name="name" type="text" placeholder="Title" className="focus:outline-none"/>
+                  <div className="w-full flex items-start gap-3">
+                    <div className="w-1/2 flex flex-col items-start gap-4">
+                      <PickDate startDate="startDate" endDate="endDate"/>
+                      <PickTime startTime="startTime" endTime="endTime"/>
+                    </div>
+                    <div className="w-1/2 flex items-start">
+                      <PickLocation address="address" location="location" url="url"/>
+                    </div>
+                  </div>
+                  <div className="text-sm">
+                    by 
+                    <span>
+                      <Link href="/to"className="underline"> CreatiVox</Link>
+                    </span>
+                  </div>
+                  <div className="">
+                    <button type="submit" disabled className="w-full min-h-min border rounded-md py-3 text-sm text-gray-400">Buy ticket</button>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="min-w-min h-[17rem] p-3 flex flex-col justify-between relative gap-3">
-              <input type="text" placeholder="Title" className="focus:outline-none"/>
-              <div className="flex items-start gap-3">
-                <div className="flex flex-col gap-4">
-                  <button className="flex items-center justify-center gap-2">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
-                      </svg>
-                    <p className="text-sm">Choose Date</p>
-                  </button>
-                  <button className="flex items-center justify-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                    </svg>
-                    <p className="text-sm">Choose Time</p>
-                  </button>
-                </div>
-                <div className="flex ">
-                  <button className="flex items-center justify-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-                    </svg>
-                    <p className="text-sm">Choose Location</p>
-                  </button>
-                </div>
-              </div>
-              <div className="text-sm">
-                by 
-                <span>
-                  <Link href="/to"className="underline"> CreatiVox</Link>
-                </span>
-              </div>
-              <div className="">
-                <button type="submit" disabled className="w-full min-h-min border rounded-md py-3 text-sm text-gray-400">Buy ticket</button>
-              </div>
+            <div className="w-2/4 min-h-min flex flex-col gap-3">
+              <div className="w-full min-h-min flex items-center justify-center">
+                <Tabs defaultValue="category" className="w-full min-h-min flex flex-col items-center justify-center" onValueChange={(value) => setActiveTab(value)}>
+                  <TabsList>
+                    <TabsTrigger value="category">Category</TabsTrigger>
+                    <TabsTrigger value="description">Description</TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="category" className="w-full min-h-min">
+                    <div className="flex flex-col mt-2">
+                      <div className="w-full flex items-center justify-center gap-5">
+                        <PaidTicket 
+                          ticketName={values.ticketName}
+                          qty={values.qty}
+                          price={values.price}
+                          ticketDescription={values.ticketDescription}
+                          ticketStartDate={values.ticketStartDate}
+                          ticketEndDate={values.ticketEndDate}
+                          ticketStartTime={values.ticketStartTime}
+                          ticketEndTime={values.ticketEndTime}
+                        />
+                        <FreeTicket 
+                          ticketName={values.ticketName}
+                          qty={values.qty}
+                          ticketDescription={values.ticketDescription}
+                          ticketStartDate={values.ticketStartDate}
+                          ticketEndDate={values.ticketEndDate}
+                          ticketStartTime={values.ticketStartTime}
+                          ticketEndTime={values.ticketEndTime}
+                        />
+                      </div>
+                      <div className="w-full min-h-min border border-black rounded-xl p-3 mt-4">
+                        <div className="w-full h-20 border border-black rounded-lg">
+                          <div className="">
+
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </TabsContent>
+                  <TabsContent value="description" key="description" className="w-full min-h-min">
+                    <Editor setFieldValue={setFieldValue}/>
+                  </TabsContent>
+                </Tabs>
+              </div>             
             </div>
-          </div>
-        </div>
-        <div className="w-2/4 min-h-min flex flex-col gap-3">
-          <TabGroup>
-            <TabList className="flex items-center justify-center gap-5">
-              <Tab className='border border-black rounded-md px-2 py-1'>Category</Tab>
-              <Tab className='border border-black rounded-md px-2 py-1'>Description</Tab>
-            </TabList>
-            <TabPanels>
-              <TabPanel className='w-full min-h-min'>
-                
-              </TabPanel>
-              <TabPanel>
-                <div className="flex flex-col">
-                  <p className="mb-2">Description</p>
-                  <div id="editor1" style={{ height: '200px'}} className="border border-black"></div>
-                </div>
-                <div className="flex flex-col">
-                  <p className="mb-2">Terms and Condition</p>
-                  <div id="editor2" style={{ height: '200px'}} className="border border-black"></div>
-                </div>
-              </TabPanel>
-            </TabPanels>
-          </TabGroup>
-        </div>
+          </Form>
+          )}
+        </Formik>
+        
       </section>
     </main>
   )

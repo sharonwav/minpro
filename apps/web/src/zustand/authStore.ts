@@ -6,7 +6,7 @@ interface AuthState {
   email: string
   setAuth: (authData: { token: string; email: string }) => void;
   setKeepAuth: (authData: { token: string; email: string }) => void;
-  setAuthLogout: () => void;
+  setAuthSignOut: () => void;
 }
 
 const useAuthStore = create<AuthState>()(
@@ -20,7 +20,7 @@ const useAuthStore = create<AuthState>()(
       // Actions
       setAuth: ({ token, email}) => set({ token, email }),
       setKeepAuth: ({ token, email }) => set({ token, email }),
-      setAuthLogout: () => set({ token: '', email:'' }),
+      setAuthSignOut: () => set({ token: '', email:'' }),
     }),
     {
       name: 'authToken', // Persist to localStorage

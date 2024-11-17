@@ -20,6 +20,12 @@ const Sidebar: React.FC<{isOpen: boolean; toggleSidebar: () => void}> = ({isOpen
         className={`fixed left-0 top-0 h-full w-[20rem] border-r border-black p-6 transform transition-transform duration-300 ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}>
+        <div className='flex flex-col gap-4 mt-[6rem]'>
+          <Link href="/creator" className='w-full px-4 py-4 hover:border hover:border-black hover:border-b-4 hover:border-r-4 hover:rounded-md hover:py-4 hover:px-4 text-sm'>Dashboard</Link> 
+          <Link href="/creator" className='w-full px-4 py-4 hover:border hover:border-black hover:border-b-4 hover:border-r-4 hover:rounded-md hover:py-4 hover:px-4 text-sm'>Dashboard</Link> 
+          <Link href="/creator/profile" className='w-full px-4 py-4 hover:border hover:border-black hover:border-b-4 hover:border-r-4 hover:rounded-md hover:py-4 hover:px-4 text-sm'>Profile</Link> 
+          <Link href="/creator" className='w-full px-4 py-4 hover:border hover:border-black hover:border-b-4 hover:border-r-4 hover:rounded-md hover:py-4 hover:px-4 text-sm'>Dashboard</Link> 
+        </div>
       </div>     
     </div>
     );
