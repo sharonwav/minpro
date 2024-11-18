@@ -19,6 +19,10 @@ const PickLocation: React.FC<Pick<IEvent, 'location' | 'address'| 'url'>> = ({ l
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
 
+  // const addLocation = () => {
+    
+  // }
+
   return (
     <>
       <button 
@@ -68,6 +72,7 @@ const PickLocation: React.FC<Pick<IEvent, 'location' | 'address'| 'url'>> = ({ l
                     <Field
                       name="location"
                       type="text"
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFieldValue('location', e.target.value)}
                       className="w-full pr-12 border-none focus:outline-none text-sm mt-1"
                       placeholder="location"
                     />
@@ -79,6 +84,7 @@ const PickLocation: React.FC<Pick<IEvent, 'location' | 'address'| 'url'>> = ({ l
                       <Field
                         as="textarea"
                         name="address"
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFieldValue('address', e.target.value)}
                         className="w-full pr-12 border-none focus:outline-none text-sm mt-1"
                         placeholder="address"
                       />
@@ -93,6 +99,7 @@ const PickLocation: React.FC<Pick<IEvent, 'location' | 'address'| 'url'>> = ({ l
                     <Field
                       name="url"
                       type="text"
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFieldValue('url', e.target.value)}
                       className="w-full pr-12 border-none focus:outline-none text-sm mt-1"
                       placeholder="url"
                     />
@@ -110,16 +117,6 @@ const PickLocation: React.FC<Pick<IEvent, 'location' | 'address'| 'url'>> = ({ l
               <label htmlFor="skipReferralCheckbox" className="text-sm font-medium text-gray-900 w-[318px]">
                 This is an online event
               </label>
-            </div>
-
-            <div className="w-full flex justify-end space-x-2 mt-5">
-              <button
-                type="button"
-             // onClick={handleSave}
-                className="w-full px-4 py-2 bg-white border border-black rounded-md hover:border-b-4 hover:border-r-4 text-sm"
-              >
-                Add Location
-              </button>
             </div>
           </div>
           </div>

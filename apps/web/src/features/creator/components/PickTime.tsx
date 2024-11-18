@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { TimePicker } from 'antd';
 import dayjs, { Dayjs } from 'dayjs';
 import { useFormikContext } from 'formik';
@@ -12,23 +12,20 @@ const PickTime: React.FC<Pick<IEvent, 'startTime' | 'endTime'>> = ({ startTime, 
 
   const formatTime = 'HH:mm';
 
+
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
 
   const handleStartTimeChange = (time: Dayjs) => {
     if (time) {
       setFieldValue('startTime', time.format(formatTime));
-    } else {
-      setFieldValue('startTime', '00:00');
-    }
+    } 
   };
 
   const handleEndTimeChange = (time: Dayjs) => {
     if (time) {
       setFieldValue('endTime', time.format(formatTime)); 
-    } else {
-      setFieldValue('endTime', '00:00');
-    }
+    } 
   };
   
 
@@ -77,9 +74,9 @@ const PickTime: React.FC<Pick<IEvent, 'startTime' | 'endTime'>> = ({ startTime, 
               <div className="w-full relative">
                 <label className="text-sm border border-black rounded-full px-2 absolute top-0 z-10 bg-white left-2">start time</label>
                 <TimePicker 
-                  value={startTime ? dayjs(startTime, formatTime) : dayjs('00:00', formatTime)}
+                  value={values.startTime ? dayjs(values.startTime, formatTime) : null}
                   onChange={handleStartTimeChange}
-                  format={formatTime} 
+                  format={formatTime}  
                   className="w-full relative flex items-center border border-black rounded-lg h-[2.9rem] px-4 py-2.5 focus-within:border-b-4 focus-within:border-r-4 focus-within:shadow-none focus-within:border-black hover:border-black mt-2 font-sans font-normal"/>
               </div>
               </div>
@@ -87,22 +84,13 @@ const PickTime: React.FC<Pick<IEvent, 'startTime' | 'endTime'>> = ({ startTime, 
                 <div className="w-full relative">
                     <label className="text-sm border border-black rounded-full px-2 absolute top-0 z-10 bg-white left-2">end time</label>
                     <TimePicker 
-                      value={endTime ? dayjs(endTime, formatTime) : dayjs('00:00', formatTime)}
+                      value={values.endTime ? dayjs(values.endTime, formatTime) : null}
                       onChange={handleEndTimeChange}
-                      format={formatTime} 
+                      format={formatTime}
                       className="w-full relative flex items-center border border-black rounded-lg h-[2.9rem] px-4 py-2.5 focus-within:border-b-4 focus-within:border-r-4 focus-within:shadow-none focus-within:border-black hover:border-black mt-2 font-sans font-normal"/>
                 </div>
               </div>  
             </div>                 
-            <div className="w-full flex justify-end space-x-2 mt-5">
-                <button
-                  type="button"
-              // onClick={handleSave}
-                  className="w-full px-4 py-2 bg-white border border-black rounded-md hover:border-b-4 hover:border-r-4 text-sm"
-                >
-                  Add Date
-                </button>
-            </div>
             </div>
           </div>
         </div>

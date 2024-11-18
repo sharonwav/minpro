@@ -2,24 +2,26 @@ import Link from "next/link"
 
 const SignInPage: React.FC = () => {
   return (
-    <main className="w-full h-screen">
-      <section className="m-auto w-full max-w-screen-xl h-screen flex flex-col items-center justify-center gap-5">
-        <div className="min-w-min min-h-min flex items-center justify-center gap-5 border border-black rounded-xl p-2">
-          <Link href="/sign-in/user" className="px-4 py-2.5 border border-black rounded-lg text-sm hover:border-b-4 hover:border-r-4">
-            user
-          </Link>
-          <p className="text-sm">or</p>
-          <Link href="/sign-in/creator" className="px-4 py-2.5 border border-black rounded-lg text-sm hover:border-b-4 hover:border-r-4">
-            creator
-          </Link>
-        </div>
-        <label className="text-xs">change mind?  
-          <span className="hover:underline">
-            <Link href="/home"> go back to main page</Link>
-          </span>
-        </label>
-      </section>
-    </main>
+    <>
+      <main className="w-full h-screen">
+        <section className="m-auto w-full max-w-screen-xl h-screen flex flex-col items-center justify-center gap-5">
+          <div className="min-w-min min-h-min flex items-center justify-center gap-5 border border-black rounded-xl p-2">
+            <Link href="/sign-in/user" className="px-4 py-2.5 border border-black rounded-lg text-sm hover:border-b-4 hover:border-r-4">
+              user
+            </Link>
+            <p className="text-sm">or</p>
+            <Link href="/sign-in/creator" className="px-4 py-2.5 border border-black rounded-lg text-sm hover:border-b-4 hover:border-r-4">
+              creator
+            </Link>
+          </div>
+          <label className="text-xs">change mind?  
+            <span className="hover:underline">
+              <Link href="/home"> go back to main page</Link>
+            </span>
+          </label>
+        </section>
+      </main>
+    </>
   )
 }
 

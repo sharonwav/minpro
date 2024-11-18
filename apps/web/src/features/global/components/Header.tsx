@@ -6,8 +6,8 @@ interface IHeader {
 
 const Header: React.FC<IHeader> = ({className}) => {
   return (
-    <header className="w-full fixed z-10">
-      <nav className={`m-auto w-full h-20 flex items-center justify-between border-b border-black bg-white px-20 ${className}`}>
+    <header className="bg-[#ff6392] w-full min-h-min fixed z-10">
+      <nav className={`m-auto w-full h-20 flex items-center justify-between border-b border-black px-20 ${className}`}>
         <div className="flex items-center justify-center">
           <Link href="/home" className="flex px-4 py-2.5  rounded-xl hover:cursor-pointer text-sm">         
           {/* <svg
@@ -25,13 +25,13 @@ const Header: React.FC<IHeader> = ({className}) => {
           <p>onClick(e)</p>
           </Link>
         </div>
-        <div className="relative flex items-center border border-black rounded-lg px-4 py-2.5 focus-within:border-b-4 focus-within:border-r-4">
+        <div className="bg-white relative flex items-center border border-black rounded-lg px-4 py-2.5 focus-within:border-b-4 focus-within:border-r-4">
           <input
             type="search"
             className="w-[20rem] pr-12 border-none focus:outline-none text-sm"
             placeholder="type here to search"
             />
-          <button className="absolute right-2 border border-black px-3 py-[2px] rounded-xl text-sm">
+          <button className="bg-[#ffe45e] absolute right-2 border border-black px-3 py-[2px] rounded-xl text-sm hover:border-b-4 hover:border-r-4 active:border-b active:border-r">
                 search
           </button>
         </div>
@@ -39,10 +39,10 @@ const Header: React.FC<IHeader> = ({className}) => {
           <Link href="/home/discover" className="flex px-4 py-2.5 text-sm">         
             explore
           </Link>
-          <Link href="/sign-up" className="flex px-4 py-2.5 border border-black rounded-lg hover:cursor-pointer hover:border-b-4 hover:border-r-4 text-sm">         
+          <Link href="/sign-up" className="bg-[#ffe45e] flex px-4 py-2.5 border border-black rounded-lg hover:cursor-pointer hover:border-b-4 hover:border-r-4 text-sm active:border-b active:border-r">         
             create an account
           </Link>  
-          <Link href="/sign-in" className="flex px-4 py-2.5 border border-black rounded-lg hover:cursor-pointer hover:border-b-4 hover:border-r-4 text-sm">         
+          <Link href="/sign-in" className="bg-white flex px-4 py-2.5 border border-black rounded-lg hover:cursor-pointer hover:border-b-4 hover:border-r-4 text-sm active:border-b active:border-r">         
             sign in
           </Link>
         </div>

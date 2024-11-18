@@ -15,7 +15,7 @@ const LatestEventWrap: React.FC = () => {
           <p className='m-0 p-0 font-bold'>The Weeknd: Sao Paolo</p>
         </div>
         <div className='p-2'>
-          <div className='w-full h-[3rem] border border-black rounded-lg flex items-center justify-center text-xs'>
+          <div className='bg-[#ffe45e] w-full h-[3rem] border border-black rounded-lg flex items-center justify-center text-xs'>
             Buy ticket
           </div>
         </div>
@@ -31,7 +31,7 @@ const LatestEventWrap: React.FC = () => {
           <p className='m-0 p-0 font-bold'>The Weeknd: Sao Paolo</p>
         </div>
         <div className='p-2'>
-          <div className='w-full h-[3rem] border border-black rounded-lg flex items-center justify-center text-xs'>
+          <div className='bg-[#ffe45e] w-full h-[3rem] border border-black rounded-lg flex items-center justify-center text-xs'>
             Buy ticket
           </div>
         </div>
@@ -47,7 +47,7 @@ const LatestEventWrap: React.FC = () => {
           <p className='m-0 p-0 font-bold'>The Weeknd: Sao Paolo</p>
         </div>
         <div className='p-2'>
-          <div className='w-full h-[3rem] border border-black rounded-lg flex items-center justify-center text-xs'>
+          <div className='bg-[#ffe45e] w-full h-[3rem] border border-black rounded-lg flex items-center justify-center text-xs'>
             Buy ticket
           </div>
         </div>
@@ -63,7 +63,7 @@ const LatestEventWrap: React.FC = () => {
           <p className='m-0 p-0 font-bold'>The Weeknd: Sao Paolo</p>
         </div>
         <div className='p-2'>
-          <div className='w-full h-[3rem] border border-black rounded-lg flex items-center justify-center text-xs'>
+          <div className='bg-[#ffe45e] w-full h-[3rem] border border-black rounded-lg flex items-center justify-center text-xs'>
             Buy ticket
           </div>
         </div>

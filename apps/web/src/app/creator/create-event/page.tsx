@@ -18,23 +18,13 @@ const CreateEventPage: React.FC  = () => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
  
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setSelectedImage(file);
-    }
-  };
-
-
-
   return (
     <main className="w-full h-screen z-10">
       <section className="m-auto w-full max-w-screen-xl min-h-min flex items-start justify-between mt-[10rem]">
         <Formik
           initialValues={{
             name: '',
-            image: '',
+            image: [] as File[],
             startDate: '',
             endDate: '',
             startTime: '',
@@ -51,7 +41,8 @@ const CreateEventPage: React.FC  = () => {
             ticketStartDate: '',
             ticketEndDate: '',
             ticketStartTime: '',
-            ticketEndTime: ''
+            ticketEndTime: '',
+            dataTickets: []
           }}
           validationSchema={createEventValidationSchema}
           onSubmit={() => {
@@ -77,13 +68,19 @@ const CreateEventPage: React.FC  = () => {
                   </div>
                 )}
 
-                <Field
+                <input
                   name="image"
                   type="file"
                   accept="image/*"
+                  multiple
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    handleImageChange(e);
-                    setFieldValue("image", e.currentTarget.files?.[0] || null);
+                    const files = e.currentTarget.files;
+                    if (files && files.length > 0) {
+                      // Convert FileList to an array
+                      const fileArray = Array.from(files);
+                      setFieldValue('image', fileArray); // Update Formik state with the file array
+                      setSelectedImage(fileArray[0]); // Optionally, preview the first selected image
+                    }
                   }}
                   className="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-auto text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 opacity-75 cursor-pointer"
                 />
@@ -155,7 +152,10 @@ const CreateEventPage: React.FC  = () => {
                     <Editor setFieldValue={setFieldValue}/>
                   </TabsContent>
                 </Tabs>
-              </div>             
+              </div>    
+              <div className="w-30 flex items-end justify-end  ">
+                <button type="submit" >Submit</button>
+              </div>         
             </div>
           </Form>
           )}

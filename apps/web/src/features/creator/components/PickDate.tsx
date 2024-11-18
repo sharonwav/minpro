@@ -17,6 +17,7 @@ const PickDate: React.FC<Pick<IEvent, 'startDate' | 'endDate'>> = ({ startDate, 
 
   const handleDateSelect = (name: string, date: Date) => {
     setFieldValue(name, date); 
+    console.log(name, date)
   };
 
 
@@ -69,10 +70,11 @@ const PickDate: React.FC<Pick<IEvent, 'startDate' | 'endDate'>> = ({ startDate, 
                                   className="w-full bg-white text-black relative flex items-center justify-between border border-black rounded-lg h-[2.9rem] mt-2 hover:bg-white"
                                   >
                                     <div className="w-full flex items-center justify-start mt-1">
-                                      <p className="font-normal">{format(values[startDate], "PPP")}</p>
-                                    </div>
-                                    <div className="w-full flex items-center justify-end ">
-                                      <CalendarIcon />
+                                      <p className="font-normal">
+                                        {values[startDate] 
+                                          ? format(new Date(values[startDate]), "PPP") 
+                                          : ""}
+                                      </p>
                                     </div>
                                   </Button>
                               </PopoverTrigger>
@@ -95,11 +97,12 @@ const PickDate: React.FC<Pick<IEvent, 'startDate' | 'endDate'>> = ({ startDate, 
                                   <Button
                                   className="w-full bg-white text-black relative flex items-center justify-between border border-black rounded-lg h-[2.9rem] mt-2 hover:bg-white"
                                   >
-                                    <div className="w-full flex items-center justify-start">
-                                      <p className="font-normal">{format(values[endDate], "PPP")}</p>
-                                    </div>
-                                    <div className="w-full flex items-center justify-end mt-1">
-                                      <CalendarIcon />
+                                    <div className="w-full flex items-center justify-start mt-1">
+                                      <p className="font-normal">
+                                        {values[endDate] 
+                                          ? format(new Date(values[endDate]), "PPP") 
+                                          : ""}
+                                      </p>
                                     </div>
                                   </Button>
                               </PopoverTrigger>

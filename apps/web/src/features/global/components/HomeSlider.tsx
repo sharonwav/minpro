@@ -23,7 +23,7 @@ const HomeSlider: React.FC = () => {
   return (
     <div className="w-full slider-container">
       <Slider {...settings}>
-        <Link href="" className="transition-transform duration-300 hover:scale-105 hover:z-10 flex items-center justify-center w-full h-[15rem] bg-[#ff0000] relative">
+        <Link href="" className="flex items-center justify-center w-full h-[15rem] bg-[#ff0000] relative">
           <div className="w-full">
 
           </div>
@@ -33,7 +33,7 @@ const HomeSlider: React.FC = () => {
             </div>
           </div>
         </Link>
-        <Link href="" className="transition-transform duration-300 hover:scale-105 hover:z-10 flex items-center justify-center w-full h-[15rem] bg-[#000000] relative">
+        <Link href="" className="flex items-center justify-center w-full h-[15rem] bg-[#000000] relative">
           <div className="flex items-center justify-center absolute bottom-2 right-2">
             <div className="border border-black rounded-lg bg-white px-4 py-2.5">
               <p className="text-xs">Buy tickets</p>

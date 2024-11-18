@@ -40,6 +40,26 @@ const FreeTicket: React.FC<Pick<IEvent, 'ticketName' | 'qty' | 'ticketDescriptio
     }
   };
 
+  const addTicket = () => {
+    const newTicket = {
+      ticketName: values.ticketName || '',
+      qty: values.qty || 0,
+      ticketDescription: values.ticketDescription || '',
+      ticketStartDate: values.ticketStartDate || null,
+      ticketEndDate: values.ticketEndDate || null,
+      ticketStartTime: values.ticketStartTime || '00:00',
+      ticketEndTime: values.ticketEndTime || '00:00',
+    };
+  
+    // Memastikan dataTickets ada sebelum diubah
+    const updatedTickets = [...(values.dataTickets || []), newTicket];
+  
+    // Set field value untuk dataTickets
+    setFieldValue('dataTickets', updatedTickets);
+  
+    console.log("Updated Tickets:", updatedTickets); // Debug log
+  };
+
   return (
     <>
       <button
@@ -205,7 +225,7 @@ const FreeTicket: React.FC<Pick<IEvent, 'ticketName' | 'qty' | 'ticketDescriptio
                     <div className="w-full flex justify-end space-x-2 mt-5">
                         <button
                             type="button"
-                            // onClick={handleSave}
+                            onClick={() => addTicket()}
                             className="w-full px-4 py-2 bg-white border border-black rounded-md hover:border-b-4 hover:border-r-4 text-sm"
                         >
                         Add Ticket

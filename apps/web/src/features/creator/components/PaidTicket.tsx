@@ -10,7 +10,7 @@ import { useFormikContext, Field } from "formik";
 import IEvent from "../types";
 
 const PaidTicket: React.FC<Pick<IEvent, 'ticketName' | 'qty' | 'price' | 'ticketDescription' | 'ticketStartDate' | 'ticketEndDate' | 'ticketStartTime' | 'ticketEndTime'>> = 
-({ ticketName, qty, price, ticketDescription, ticketStartDate, ticketEndDate, ticketStartTime, ticketEndTime }) => {
+({ ticketName, qty, price, ticketDescription, ticketStartDate, ticketEndDate, ticketStartTime, ticketEndTime}) => {
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
   const [showNextPage, setNextPage] = useState<boolean>(false);
   const { values, setFieldValue } = useFormikContext<any>();
@@ -21,8 +21,8 @@ const PaidTicket: React.FC<Pick<IEvent, 'ticketName' | 'qty' | 'price' | 'ticket
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
 
-  const handleDateSelect = (name: string, date: Date) => {
-    setFieldValue(name, date); 
+  const handleDateSelect = (field: string, date: Date) => {
+    setFieldValue(field, date); 
   };
 
   const handleStartTimeChange = (time: Dayjs) => {
@@ -40,6 +40,29 @@ const PaidTicket: React.FC<Pick<IEvent, 'ticketName' | 'qty' | 'price' | 'ticket
       setFieldValue('ticketEndTime', '00:00');
     }
   };
+
+  const addTicket = () => {
+    const newTicket = {
+      ticketName: values.ticketName || '',
+      qty: values.qty || 0,
+      price: values.price || 0,
+      ticketDescription: values.ticketDescription || '',
+      ticketStartDate: values.ticketStartDate || null,
+      ticketEndDate: values.ticketEndDate || null,
+      ticketStartTime: values.ticketStartTime || '00:00',
+      ticketEndTime: values.ticketEndTime || '00:00',
+    };
+  
+    // Memastikan dataTickets ada sebelum diubah
+    const updatedTickets = [...(values.dataTickets || []), newTicket];
+  
+    // Set field value untuk dataTickets
+    setFieldValue('dataTickets', updatedTickets);
+  
+    console.log("Updated Tickets:", updatedTickets); // Debug log
+  };
+  
+
 
   return (
     <>
@@ -62,7 +85,7 @@ const PaidTicket: React.FC<Pick<IEvent, 'ticketName' | 'qty' | 'price' | 'ticket
               <button
                 type="button"
                 onClick={closeModal}
-                className="px-2 py-2 bg-white text-black border border-b-4 border-r-4 border-black rounded-lg focus-within:border-b focus-within:border-r"
+                className="px-2 py-2 bg-white text-black border border-b-4 border-r-4 border-black rounded-lg focus-within:border-b-4 focus-within:border-r"
                 title="close"
               >
                 <svg
@@ -218,7 +241,7 @@ const PaidTicket: React.FC<Pick<IEvent, 'ticketName' | 'qty' | 'price' | 'ticket
                     <div className="w-full flex justify-end space-x-2 mt-5">
                         <button
                             type="button"
-                            // onClick={handleSave}
+                            onClick={() => addTicket()}
                             className="w-full px-4 py-2 bg-white border border-black rounded-md hover:border-b-4 hover:border-r-4 text-sm"
                         >
                         Add Ticket
