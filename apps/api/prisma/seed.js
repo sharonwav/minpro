@@ -15,6 +15,8 @@ const creator = [
     }
 ]
 
+
+
 async function main(){
     const newCreator = await prisma.creator.create({
         data: {
