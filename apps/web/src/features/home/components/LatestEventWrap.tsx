@@ -1,5 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
+import instance from '@/utils/axiosInstance'
+import { useQuery } from '@tanstack/react-query'
 
 const LatestEventWrap: React.FC = () => {
   return (

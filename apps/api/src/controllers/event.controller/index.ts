@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from "express";
-import { createEventService } from "@/services/event.service";
+import { createEventService, getEventFilter, getAllEventService } from "@/services/event.service";
 
 export const createEvent = async (req: Request, res: Response, next: NextFunction) => {
     try {
 
-        const imagesUploaded = req?.files
+        const imagesUploaded = req?.files as Express.Multer.File[]
         const {
             name,
             image,
@@ -26,7 +26,7 @@ export const createEvent = async (req: Request, res: Response, next: NextFunctio
             ticketStartTime,
             ticketEndTime,
             dataTickets,
-            creatorId
+            creatorId,
         } = req.body
 
 
@@ -87,5 +87,37 @@ export const createEvent = async (req: Request, res: Response, next: NextFunctio
     } catch (error) {
         next(error)
         console.log(error)
+    }
+}
+
+export const getAllEvents = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const events = await getAllEventService();
+
+        res.status(200).json({
+            error: false,
+            message: 'Get All Events Success',
+            data: events,
+        });
+    } catch (error) {
+        next(error);
+    }
+}
+
+export const getEventFilterCTR = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { filterName } = req.body
+
+        const filterEvent = await getEventFilter({
+            filterName
+        })
+
+        res.status(200).json({
+            error: false,
+            message: 'Get Event Filter Success',
+            data: filterEvent
+        })
+    } catch (error) {
+        next(error)
     }
 }

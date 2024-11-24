@@ -1,5 +1,5 @@
 import { prisma } from "@/connection";
-import IEvent from "./types";
+import IEvent, {IEventGetFilter} from "./types";
 
 export const createEventService = async({
     name,
@@ -42,7 +42,7 @@ export const createEventService = async({
                 description,
                 termsAndCondition,
                 creatorId,
-                imagesUploaded
+                // imagesUploaded
             }
         })
 
@@ -57,3 +57,52 @@ export const createEventService = async({
 
     })
 }
+
+export const getAllEventService = async () => {
+    const events = await prisma.event.findMany({
+        include: {
+            eventTicket: true, 
+        },
+    });
+
+    const formattedEvents = events.map(event => ({
+        name: event.name,
+        image: event.image,
+        startDate: event.startDate,
+        endDate: event.endDate,
+        startTime: event.startTime,
+        endTime: event.endTime,
+        location: event.location,
+        address: event.address,
+        url: event.url,
+        description: event.description,
+        termsAndCondition: event.termsAndCondition,
+        dataTicket: event.eventTicket.map(ticket => ({
+            ticketName: ticket.ticketName,
+            qty: ticket.qty,
+            price: ticket.price,
+            ticketDescription: ticket.ticketDescription,
+            ticketStartDate: ticket.ticketStartDate,
+            ticketEndDate: ticket.ticketEndDate,
+            ticketStartTime: ticket.ticketStartTime,
+            ticketEndTime: ticket.ticketEndTime,
+        })),
+    }));
+
+    return formattedEvents;
+};
+
+export const getEventFilter = async ({
+    filterName
+}: IEventGetFilter) => {
+
+    const getEvent = await prisma.$queryRaw`
+        SELECT id, name, location, startDate, endDate, startTime, endTime, location, address,description, 
+        termsAndCondition FROM events WHERE name LIKE ${'%' + filterName + '%'} or location LIKE ${'%' + filterName + '%'}
+        `;
+
+    return getEvent;
+}
+
+
+

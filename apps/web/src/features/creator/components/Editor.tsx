@@ -1,22 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Quill from 'quill';
 
 interface EditorProps {
   setFieldValue: (field: string, value: any) => void;
+  description: string;
+  termsAndCondition: string;
 }
 
-const Editor: React.FC<EditorProps> = ({ setFieldValue }) => {
-  const [activeTab, setActiveTab] = useState("description"); // Default to description
+const Editor: React.FC<EditorProps> = ({ setFieldValue, description, termsAndCondition }) => {
+  const [activeTab, setActiveTab] = useState("description");
+  const quill1Ref = useRef<Quill | null>(null);
+  const quill2Ref = useRef<Quill | null>(null);
 
   useEffect(() => {
-    // Only initialize the editors when the active tab is "description"
-    if (activeTab === "description") {
-      const editor1Container = document.getElementById("editor1");
-      const editor2Container = document.getElementById("editor2");
-
-      // Initialize quill for the first editor
-      if (editor1Container && !editor1Container.querySelector(".ql-editor")) {
-        const quill1 = new Quill(editor1Container, {
+    const initQuill = (containerId: string, quillRef: React.MutableRefObject<Quill | null>, field: string) => {
+      const container = document.getElementById(containerId);
+      if (container && !quillRef.current) {
+        quillRef.current = new Quill(container, {
           theme: "snow",
           modules: {
             toolbar: [
@@ -28,30 +28,28 @@ const Editor: React.FC<EditorProps> = ({ setFieldValue }) => {
           },
         });
 
-        quill1.on("text-change", () => {
-          setFieldValue("description", quill1.root.innerHTML);
-        });
-      }
-
-      if (editor2Container && !editor2Container.querySelector(".ql-editor")) {
-        const quill2 = new Quill(editor2Container, {
-          theme: "snow",
-          modules: {
-            toolbar: [
-              [{ header: [1, 2, false] }],
-              ["bold", "italic", "underline"],
-              ["link", "image"],
-              [{ list: "ordered" }, { list: "bullet" }],
-            ],
-          },
+        quillRef.current.on("text-change", () => {
+          setFieldValue(field, JSON.stringify(quillRef.current?.getContents() || {}));
         });
 
-        quill2.on("text-change", () => {
-          setFieldValue("termsAndContition", quill2.root.innerHTML);
-        });
+        //Set initial content AFTER Quill is initialized
+        try {
+          const initialContent = field === 'description' ? description : termsAndCondition;
+          if (initialContent) {
+            quillRef.current.setContents(JSON.parse(initialContent));
+          }
+        } catch (error) {
+          console.error(`Error parsing ${field}:`, error);
+        }
       }
     }
-  }, [activeTab, setFieldValue]); 
+
+    initQuill("editor1", quill1Ref, "description");
+    initQuill("editor2", quill2Ref, "termsAndCondition");
+
+    console.log(description)
+
+  }, [description, termsAndCondition, setFieldValue]); //Only runs on mount and when props change
 
   return (
     <>

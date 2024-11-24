@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -8,12 +8,39 @@ import { TimePicker } from 'antd';
 import dayjs, { Dayjs } from 'dayjs';
 import { useFormikContext, Field } from "formik";
 import IEvent from "../types";
+import useTicketStore from "@/zustand/ticketStore";
+import { ErrorMessage } from "formik";
 
-const PaidTicket: React.FC<Pick<IEvent, 'ticketName' | 'qty' | 'price' | 'ticketDescription' | 'ticketStartDate' | 'ticketEndDate' | 'ticketStartTime' | 'ticketEndTime'>> = 
-({ ticketName, qty, price, ticketDescription, ticketStartDate, ticketEndDate, ticketStartTime, ticketEndTime}) => {
+interface TicketData {
+  ticketName: string,
+  qty: number,
+  price?: number,
+  ticketDescription: string,
+  ticketStartDate: string,
+  ticketEndDate: string,
+  ticketStartTime: string,
+  ticketEndTime: string
+}
+
+interface PaidTicketProps {
+  dataTickets: TicketData[]
+  ticketName: string,
+  qty: number,
+  price?: number,
+  ticketDescription: string,
+  ticketStartDate: string,
+  ticketEndDate: string,
+  ticketStartTime: string,
+  ticketEndTime: string
+  onEdit?: (ticket: TicketData) => void
+
+}
+
+
+const PaidTicket: React.FC<PaidTicketProps> = ({dataTickets, ticketName, qty, price, ticketDescription, ticketStartDate, ticketEndDate, ticketStartTime, ticketEndTime, onEdit}) => {
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
   const [showNextPage, setNextPage] = useState<boolean>(false);
-  const { values, setFieldValue } = useFormikContext<any>();
+  const { values, setFieldValue, setValues } = useFormikContext<any>();
   
 
   const formatTime = 'HH:mm';
@@ -21,8 +48,8 @@ const PaidTicket: React.FC<Pick<IEvent, 'ticketName' | 'qty' | 'price' | 'ticket
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
 
-  const handleDateSelect = (field: string, date: Date) => {
-    setFieldValue(field, date); 
+  const handleDateSelect = (name: string, date: Date) => {
+    setFieldValue(name, date); 
   };
 
   const handleStartTimeChange = (time: Dayjs) => {
@@ -41,8 +68,10 @@ const PaidTicket: React.FC<Pick<IEvent, 'ticketName' | 'qty' | 'price' | 'ticket
     }
   };
 
-  const addTicket = () => {
-    const newTicket = {
+  const addDataTicket = useTicketStore((state) => state.addDataTicket)
+
+  const addTicket:any = () => {
+    const newTicket: TicketData = {
       ticketName: values.ticketName || '',
       qty: values.qty || 0,
       price: values.price || 0,
@@ -58,17 +87,24 @@ const PaidTicket: React.FC<Pick<IEvent, 'ticketName' | 'qty' | 'price' | 'ticket
   
     // Set field value untuk dataTickets
     setFieldValue('dataTickets', updatedTickets);
-  
-    console.log("Updated Tickets:", updatedTickets); // Debug log
+    addDataTicket(newTicket);
+    closeModal();
   };
+
   
+
+  
+
+
+
+
 
 
   return (
     <>
       <button
         type="button"
-        className="border border-black rounded-md px-6 py-2"
+        className="border border-black rounded-md hover:border-b-4 hover:border-r-4 active:border-b active:border-r px-6 py-2"
         onClick={openModal}
       >
         <div className="flex flex-col items-center justify-center">
@@ -85,7 +121,7 @@ const PaidTicket: React.FC<Pick<IEvent, 'ticketName' | 'qty' | 'price' | 'ticket
               <button
                 type="button"
                 onClick={closeModal}
-                className="px-2 py-2 bg-white text-black border border-b-4 border-r-4 border-black rounded-lg focus-within:border-b-4 focus-within:border-r"
+                className="px-2 py-2 bg-white text-black border border-b-4 border-r-4 border-black rounded-lg active:border-b active:border-r"
                 title="close"
               >
                 <svg
@@ -117,6 +153,7 @@ const PaidTicket: React.FC<Pick<IEvent, 'ticketName' | 'qty' | 'price' | 'ticket
                         placeholder="title"
                       />
                     </div>
+                    <ErrorMessage name="ticketName" component={'div'} className="text-red-500 text-sm"/>
                   </div>
                   <div className="flex flex-col items-start relative">
                     <label className="text-sm border border-black rounded-full px-2 absolute top-0 z-10 bg-white left-2">quantity</label>
@@ -128,6 +165,7 @@ const PaidTicket: React.FC<Pick<IEvent, 'ticketName' | 'qty' | 'price' | 'ticket
                         placeholder="0"
                       />
                     </div>
+                    <ErrorMessage name="qty" component={'div'} className="text-red-500 text-sm"/>
                   </div>
                   <div className="flex flex-col items-start relative">
                     <label className="text-sm border border-black rounded-full px-2 absolute top-0 z-10 bg-white left-2">price</label>
@@ -149,10 +187,11 @@ const PaidTicket: React.FC<Pick<IEvent, 'ticketName' | 'qty' | 'price' | 'ticket
                         className="w-full pr-12 border-none focus:outline-none text-sm mt-1"
                         placeholder="description"
                       />
+                      <ErrorMessage name="ticketDescription" component={'div'} className="text-red-500 text-sm"/>
                     </div>
                   </div>
                   <div className="w-full flex items-center justify-end mt-3">
-                    <button onClick={() => setNextPage(true)} className="border border-black px-3 py-[2px] rounded-xl text-sm hover:border-b-4 hover:border-r-4">
+                    <button onClick={() => setNextPage(true)} className="border border-black px-3 py-[2px] rounded-xl text-sm hover:border-b-4 hover:border-r-4 active:border-b active:border-r">
                         next
                     </button>
                 </div>
@@ -168,7 +207,9 @@ const PaidTicket: React.FC<Pick<IEvent, 'ticketName' | 'qty' | 'price' | 'ticket
                                     className="w-full bg-white text-black relative flex items-center justify-between border border-black rounded-lg h-[2.9rem] mt-2 hover:bg-white"
                                     >
                                       <div className="w-full flex items-center justify-start mt-1">
-                                        <p className="font-normal">{values.ticketStartDate ? format(values.ticketStartDate, "PPP") : <span></span>}</p>
+                                        <p className="font-normal"> {values[ticketStartDate] 
+                                          ? format(new Date(values[ticketStartDate]), "PPP") 
+                                          : ""}</p>
                                       </div>
                                       <div className="w-full flex items-center justify-end ">
                                         <CalendarIcon />
@@ -178,12 +219,13 @@ const PaidTicket: React.FC<Pick<IEvent, 'ticketName' | 'qty' | 'price' | 'ticket
                                 <PopoverContent className="w-auto p-0" align="start">
                                     <Calendar
                                     mode="single"
-                                    selected={values.ticketStartDate}
+                                    selected={values[ticketStartDate]}
                                     onSelect={(date) => date && handleDateSelect(ticketStartDate, date)}
                                     initialFocus
                                     />
                                 </PopoverContent>
                             </Popover>
+                            <ErrorMessage name="ticketStartDate" component={'div'} className="text-red-500 text-sm"/>
                         </div>
                         <div className='w-1/4 flex flex-col items-center'>
                             <div className="w-full relative">
@@ -193,6 +235,7 @@ const PaidTicket: React.FC<Pick<IEvent, 'ticketName' | 'qty' | 'price' | 'ticket
                                 onChange={handleStartTimeChange}
                                 format={formatTime}  
                                 className="w-full relative flex items-center border border-black rounded-lg h-[2.9rem] px-4 py-2.5 focus-within:border-b-4 focus-within:border-r-4 focus-within:shadow-none focus-within:border-black hover:border-black mt-2 font-sans font-normal"/>
+                                <ErrorMessage name="ticketStartTime" component={'div'} className="text-red-500 text-sm"/>
                             </div>
                         </div>
                     </div>
@@ -205,7 +248,9 @@ const PaidTicket: React.FC<Pick<IEvent, 'ticketName' | 'qty' | 'price' | 'ticket
                                     className="w-full bg-white text-black relative flex items-center justify-between border border-black rounded-lg h-[2.9rem] mt-2 hover:bg-white"
                                     >
                                       <div className="w-full flex items-center justify-start mt-1">
-                                        <p className="font-normal">{values.ticketEndDate ? format(values.ticketEndDate, "PPP") : <span></span>}</p>
+                                        <p className="font-normal">{values[ticketEndDate] 
+                                          ? format(new Date(values[ticketEndDate]), "PPP") 
+                                          : ""}</p>
                                       </div>
                                       <div className="w-full flex items-center justify-end ">
                                         <CalendarIcon />
@@ -215,12 +260,13 @@ const PaidTicket: React.FC<Pick<IEvent, 'ticketName' | 'qty' | 'price' | 'ticket
                                 <PopoverContent className="w-auto p-0" align="start">
                                     <Calendar
                                     mode="single"
-                                    selected={values.ticketEndDate}
+                                    selected={values[ticketEndDate]}
                                     onSelect={(date) => date && handleDateSelect(ticketEndDate, date)}
                                     initialFocus
                                     />
                                 </PopoverContent>
                             </Popover>
+                            <ErrorMessage name="ticketEndDate" component={'div'} className="text-red-500 text-sm"/>
                         </div>
                         <div className='w-1/4 flex flex-col items-center'>
                             <div className="w-full relative">
@@ -230,11 +276,12 @@ const PaidTicket: React.FC<Pick<IEvent, 'ticketName' | 'qty' | 'price' | 'ticket
                                 onChange={handleEndTimeChange}
                                 format={formatTime} 
                                 className="w-full relative flex items-center border border-black rounded-lg h-[2.9rem] px-4 py-2.5 focus-within:border-b-4 focus-within:border-r-4 focus-within:shadow-none focus-within:border-black hover:border-black mt-2 font-sans font-normal"/>
+                                <ErrorMessage name="ticketEndTime" component={'div'} className="text-red-500 text-sm"/>
                             </div>
                         </div>
                     </div>                    
                     <div className="w-full flex items-center justify-start mt-3">
-                        <button onClick={() => setNextPage(false)} className="border border-black px-3 py-[2px] rounded-xl text-sm hover:border-b-4 hover:border-r-4">
+                        <button onClick={() => setNextPage(false)} className="border border-black px-3 py-[2px] rounded-xl text-sm hover:border-b-4 hover:border-r-4 active:border-b active:border-r">
                             back
                         </button>
                     </div>
@@ -242,7 +289,7 @@ const PaidTicket: React.FC<Pick<IEvent, 'ticketName' | 'qty' | 'price' | 'ticket
                         <button
                             type="button"
                             onClick={() => addTicket()}
-                            className="w-full px-4 py-2 bg-white border border-black rounded-md hover:border-b-4 hover:border-r-4 text-sm"
+                            className="w-full px-4 py-2 bg-white border border-black rounded-md hover:border-b-4 hover:border-r-4 active:border-b active:border-r text-sm"
                         >
                         Add Ticket
                         </button>

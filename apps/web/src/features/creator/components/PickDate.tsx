@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { useFormikContext } from 'formik';
 import IEvent from '../types';
+import { ErrorMessage } from 'formik';
 
 
 const PickDate: React.FC<Pick<IEvent, 'startDate' | 'endDate'>> = ({ startDate, endDate }) => {
@@ -62,7 +62,7 @@ const PickDate: React.FC<Pick<IEvent, 'startDate' | 'endDate'>> = ({ startDate, 
           </div>
           <div className="flex flex-col space-y-3 mt-5">
                 <div className="w-full flex items-center justify-center relative gap-4">
-                  <div className='w-full flex flex-col items-center'>
+                  <div className='w-full flex flex-col justify-start'>
                           <label className="text-sm border border-black rounded-full px-2 absolute top-0 z-10 bg-white left-2">start date</label>
                           <Popover>
                               <PopoverTrigger asChild>
@@ -87,10 +87,11 @@ const PickDate: React.FC<Pick<IEvent, 'startDate' | 'endDate'>> = ({ startDate, 
                                   />
                               </PopoverContent>
                           </Popover>
+                          <ErrorMessage name="startDate" component={'div'} className="text-red-500 text-sm"/>
                   </div>
                 </div>
                 <div className="w-full flex items-center justify-center relative gap-4">
-                      <div className='w-full flex flex-col items-center'>
+                      <div className='w-full flex flex-col justify-start'>
                           <label className="text-sm border border-black rounded-full px-2 absolute top-0 z-10 bg-white left-2">end date</label>
                           <Popover>
                               <PopoverTrigger asChild>
@@ -115,19 +116,20 @@ const PickDate: React.FC<Pick<IEvent, 'startDate' | 'endDate'>> = ({ startDate, 
                                   />
                               </PopoverContent>
                           </Popover>
+                          <ErrorMessage name="endDate" component={'div'} className="text-red-500 text-sm"/>
                       </div>
                 </div>                    
                 <div className="w-full flex items-center justify-start mt-3">
                 
                 </div>
                 <div className="w-full flex justify-end space-x-2 mt-5">
-                      <button
-                          type="button"
-                          // onClick={handleSave}
-                          className="w-full px-4 py-2 bg-white border border-black rounded-md hover:border-b-4 hover:border-r-4 text-sm"
-                      >
-                      Add Date
-                      </button>
+                  <button
+                    type="button"
+                    onClick={closeModal}
+                    className="w-full px-4 py-2 bg-white border border-black rounded-md hover:border-b-4 hover:border-r-4 text-sm"
+                  >
+                    Add Date
+                  </button>
                 </div>
             </div>
           </div>

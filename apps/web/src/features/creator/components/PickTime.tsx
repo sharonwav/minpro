@@ -3,6 +3,7 @@ import { TimePicker } from 'antd';
 import dayjs, { Dayjs } from 'dayjs';
 import { useFormikContext } from 'formik';
 import IEvent from '../types';
+import { ErrorMessage } from 'formik';
 
 
 
@@ -68,29 +69,40 @@ const PickTime: React.FC<Pick<IEvent, 'startTime' | 'endTime'>> = ({ startTime, 
                 </svg>
               </button>
             </div>
-          <div className="flex flex-col items-start space-y-3 mt-5">
-            <div className='w-full flex items-center justify-center gap-3'>
-            <div className='w-1/2 flex flex-col items-center'>
-              <div className="w-full relative">
-                <label className="text-sm border border-black rounded-full px-2 absolute top-0 z-10 bg-white left-2">start time</label>
-                <TimePicker 
-                  value={values.startTime ? dayjs(values.startTime, formatTime) : null}
-                  onChange={handleStartTimeChange}
-                  format={formatTime}  
-                  className="w-full relative flex items-center border border-black rounded-lg h-[2.9rem] px-4 py-2.5 focus-within:border-b-4 focus-within:border-r-4 focus-within:shadow-none focus-within:border-black hover:border-black mt-2 font-sans font-normal"/>
-              </div>
-              </div>
-              <div className='w-1/2 flex flex-col items-center'>
-                <div className="w-full relative">
-                    <label className="text-sm border border-black rounded-full px-2 absolute top-0 z-10 bg-white left-2">end time</label>
+            <div className="flex flex-col items-start space-y-3 mt-5">
+              <div className='w-full flex items-center justify-center gap-3'>
+                  <div className='w-1/2 flex flex-col items-center'>
+                  <div className="w-full relative">
+                    <label className="text-sm border border-black rounded-full px-2 absolute top-0 z-10 bg-white left-2">start time</label>
                     <TimePicker 
-                      value={values.endTime ? dayjs(values.endTime, formatTime) : null}
-                      onChange={handleEndTimeChange}
-                      format={formatTime}
+                      value={values.startTime ? dayjs(values.startTime, formatTime) : null}
+                      onChange={handleStartTimeChange}
+                      format={formatTime}  
                       className="w-full relative flex items-center border border-black rounded-lg h-[2.9rem] px-4 py-2.5 focus-within:border-b-4 focus-within:border-r-4 focus-within:shadow-none focus-within:border-black hover:border-black mt-2 font-sans font-normal"/>
-                </div>
+                      <ErrorMessage name="startTime" component={'div'} className="text-red-500 text-sm"/>
+                  </div>
+                  </div>
+                  <div className='w-1/2 flex flex-col items-center'>
+                    <div className="w-full relative">
+                        <label className="text-sm border border-black rounded-full px-2 absolute top-0 z-10 bg-white left-2">end time</label>
+                        <TimePicker 
+                          value={values.endTime ? dayjs(values.endTime, formatTime) : null}
+                          onChange={handleEndTimeChange}
+                          format={formatTime}
+                          className="w-full relative flex items-center border border-black rounded-lg h-[2.9rem] px-4 py-2.5 focus-within:border-b-4 focus-within:border-r-4 focus-within:shadow-none focus-within:border-black hover:border-black mt-2 font-sans font-normal"/>
+                          <ErrorMessage name="endTime" component={'div'} className="text-red-500 text-sm"/>
+                    </div>
+                  </div>  
               </div>  
-            </div>                 
+              <div className="w-full flex justify-end space-x-2 mt-5">
+                <button
+                  type="button"
+                  onClick={closeModal}
+                  className="w-full px-4 py-2 bg-white border border-black rounded-md hover:border-b-4 hover:border-r-4 text-sm"
+                >
+                  Add Time
+                </button>
+              </div>               
             </div>
           </div>
         </div>

@@ -82,10 +82,10 @@ CREATE TABLE `event_tickets` (
     `qty` INTEGER NOT NULL,
     `price` INTEGER NULL,
     `ticketDescription` VARCHAR(191) NOT NULL,
-    `ticketStartDate` DATETIME(3) NOT NULL,
-    `ticketEndDate` DATETIME(3) NOT NULL,
-    `ticketStartTime` DATETIME(3) NOT NULL,
-    `ticketEndTime` DATETIME(3) NOT NULL,
+    `ticketStartDate` DATE NOT NULL,
+    `ticketEndDate` DATE NOT NULL,
+    `ticketStartTime` TIME NOT NULL,
+    `ticketEndTime` TIME NOT NULL,
     `eventId` INTEGER NOT NULL DEFAULT 0,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
@@ -173,10 +173,9 @@ CREATE TABLE `category` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Review` (
+CREATE TABLE `reviews` (
     `comments` VARCHAR(191) NOT NULL,
     `rating` INTEGER NOT NULL,
-    `feedback` VARCHAR(191) NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
     `eventId` INTEGER NOT NULL,
 
@@ -211,7 +210,7 @@ ALTER TABLE `refferal_points` ADD CONSTRAINT `refferal_points_userId_fkey` FOREI
 ALTER TABLE `referral_discounts` ADD CONSTRAINT `referral_discounts_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Review` ADD CONSTRAINT `Review_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `reviews` ADD CONSTRAINT `reviews_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Review` ADD CONSTRAINT `Review_eventId_fkey` FOREIGN KEY (`eventId`) REFERENCES `events`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `reviews` ADD CONSTRAINT `reviews_eventId_fkey` FOREIGN KEY (`eventId`) REFERENCES `events`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -1,10 +1,62 @@
+'use client'
+import { useEffect, useState } from "react"
 import Link from "next/link"
+import { useQuery } from "@tanstack/react-query"
+import instance from "@/utils/axiosInstance"
+import IEvent from "@/features/creator/types"
+import Loading from "./Loading"
 
 interface IHeader {
   className?: string
 }
 
 const Header: React.FC<IHeader> = ({className}) => {
+  const [searchingValue, setSearchingValue] = useState('')
+  const [dataEvent, setDataEvent] = useState({})
+
+  const filterEvent = async () => {
+    const response = await instance.post("/event/get-filter-event",{
+      filterName: searchingValue
+    });
+    setDataEvent(response.data.data)
+    return response.data.data
+  }
+
+  const handleSearch = async () => {
+    await filterEvent()
+  }
+  const {data, isLoading, error} = useQuery<IEvent[], Error>({
+    queryKey: ["get-all-data"],
+    queryFn: filterEvent
+  })
+
+  if(isLoading){
+    return <Loading />
+  }
+
+  if(error){
+    return <p>Error loading events: {error.message}</p>
+  }
+  
+  if(!Array.isArray(data)){
+    return <p>No events available</p>
+  }
+
+  // useEffect(()=>{
+  //   const getDataEvent = async () =>{
+  //     try {
+  //       const res = await instance.get("event/all") 
+        
+  //       setDataEvent(res.data.data)
+  //       console.log(dataEvent)
+  //     } catch (error) {
+        
+  //     }
+  //   }
+  // },[])
+  
+  
+
   return (
     <header className="bg-[#ff6392] w-full min-h-min fixed z-10">
       <nav className={`m-auto w-full h-20 flex items-center justify-between border-b border-black px-20 ${className}`}>
@@ -30,9 +82,11 @@ const Header: React.FC<IHeader> = ({className}) => {
             type="search"
             className="w-[20rem] pr-12 border-none focus:outline-none text-sm"
             placeholder="type here to search"
+            value={searchingValue}
+            onChange={(e)=>setSearchingValue(e.target.value)}
             />
-          <button className="bg-[#ffe45e] absolute right-2 border border-black px-3 py-[2px] rounded-xl text-sm hover:border-b-4 hover:border-r-4 active:border-b active:border-r">
-                search
+          <button onClick={handleSearch} className="bg-[#ffe45e] absolute right-2 border border-black px-3 py-[2px] rounded-xl text-sm hover:border-b-4 hover:border-r-4 active:border-b active:border-r">
+            search
           </button>
         </div>
         <div className="flex items-center justify-center gap-5">

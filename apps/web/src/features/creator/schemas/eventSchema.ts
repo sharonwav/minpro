@@ -14,7 +14,7 @@ export const createEventValidationSchema = Yup.object().shape({
     termsAndContition: Yup.string().required('Terms and Condition is required'),
     ticketName: Yup.string().required('Name is required'),
     qty: Yup.number().required('Quantity is required'),
-    price: Yup.number().required('Price is required'),
+    price: Yup.number(),
     ticketDescription: Yup.string().required('Description is required'),
     ticketStartDate: Yup.string().required('Start Date is required'),
     ticketEndDate: Yup.string().required('End Date is required'),

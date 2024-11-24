@@ -22,3 +22,7 @@ export default interface IEvent {
     creatorId: string
     imagesUploaded: any []
 }
+
+export interface IEventGetFilter{
+    filterName: string,
+}

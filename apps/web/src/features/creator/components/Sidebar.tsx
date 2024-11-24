@@ -8,7 +8,7 @@ const Sidebar: React.FC<{isOpen: boolean; toggleSidebar: () => void}> = ({isOpen
         <button
           type="button"
           onClick={toggleSidebar}
-          className="bg-white font-bold border border-b-4 border-r-4 border-black py-2 px-3 rounded-lg transition-transform duration-300 focus:border-b focus:border-r text-sm"
+          className="bg-white font-bold border border-b-4 border-r-4 border-black py-2 px-3 rounded-lg active:border-b active:border-r text-sm"
         >
          (e)
         </button>

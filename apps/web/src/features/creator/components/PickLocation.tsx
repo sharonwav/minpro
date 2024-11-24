@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import IEvent from '../types';
 import { useFormikContext, Field } from 'formik';
+import { ErrorMessage } from 'formik';
 
 const PickLocation: React.FC<Pick<IEvent, 'location' | 'address'| 'url'>> = ({ location, address, url}) => {
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
@@ -77,6 +78,7 @@ const PickLocation: React.FC<Pick<IEvent, 'location' | 'address'| 'url'>> = ({ l
                       placeholder="location"
                     />
                   </div>
+                  <ErrorMessage name="location" component={'div'} className="text-red-500 text-sm"/>
                 </div>
                 <div className="flex flex-col items-start relative">
                   <label className="text-sm border border-black rounded-full px-2 absolute top-0 z-10 bg-white left-2">address</label>
@@ -93,18 +95,32 @@ const PickLocation: React.FC<Pick<IEvent, 'location' | 'address'| 'url'>> = ({ l
               </>
             )}
             {isChecked && (
-              <div className="flex flex-col items-start relative">
-                <label className="text-sm border border-black rounded-full px-2 absolute top-0 z-10 bg-white left-2">url</label>
+              <>
+                <div className="flex flex-col items-start relative">
+                  <label className="text-sm border border-black rounded-full px-2 absolute top-0 z-10 bg-white left-2">location name</label>
                   <div className="w-full relative flex items-center border border-black rounded-lg px-4 py-2.5 focus-within:border-b-4 focus-within:border-r-4 mt-2">
                     <Field
-                      name="url"
+                      name="location"
                       type="text"
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFieldValue('url', e.target.value)}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFieldValue('location', e.target.value)}
                       className="w-full pr-12 border-none focus:outline-none text-sm mt-1"
-                      placeholder="url"
+                      placeholder="location"
                     />
                   </div>
-              </div>
+                </div>
+                  <div className="flex flex-col items-start relative">
+                    <label className="text-sm border border-black rounded-full px-2 absolute top-0 z-10 bg-white left-2">url</label>
+                      <div className="w-full relative flex items-center border border-black rounded-lg px-4 py-2.5 focus-within:border-b-4 focus-within:border-r-4 mt-2">
+                        <Field
+                          name="url"
+                          type="text"
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFieldValue('url', e.target.value)}
+                          className="w-full pr-12 border-none focus:outline-none text-sm mt-1"
+                          placeholder="url"
+                        />
+                      </div>
+                  </div>
+              </>
             )}
             <div className='flex items-center gap-3 relative'>
               <input
@@ -117,6 +133,15 @@ const PickLocation: React.FC<Pick<IEvent, 'location' | 'address'| 'url'>> = ({ l
               <label htmlFor="skipReferralCheckbox" className="text-sm font-medium text-gray-900 w-[318px]">
                 This is an online event
               </label>
+            </div>
+            <div className="w-full flex justify-end space-x-2 mt-5">
+              <button
+                type="button"
+                onClick={closeModal}
+                className="w-full px-4 py-2 bg-white border border-black rounded-md hover:border-b-4 hover:border-r-4 text-sm"
+              >
+                Add Location
+              </button>
             </div>
           </div>
           </div>

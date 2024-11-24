@@ -153,7 +153,10 @@ const FreeTicket: React.FC<Pick<IEvent, 'ticketName' | 'qty' | 'ticketDescriptio
                                     className="w-full bg-white text-black relative flex items-center justify-between border border-black rounded-lg h-[2.9rem] mt-2 hover:bg-white"
                                     >
                                       <div className="w-full flex items-center justify-start mt-1">
-                                        <p className="font-normal">{values.ticketStartDate ? format(values.ticketStartDate, "PPP") : <span></span>}</p>
+                                        <p className="font-normal">
+                                          {values[ticketStartDate] 
+                                          ? format(new Date(values[ticketStartDate]), "PPP") 
+                                          : ""}</p>
                                       </div>
                                       <div className="w-full flex items-center justify-end ">
                                         <CalendarIcon />
@@ -163,7 +166,7 @@ const FreeTicket: React.FC<Pick<IEvent, 'ticketName' | 'qty' | 'ticketDescriptio
                                 <PopoverContent className="w-auto p-0" align="start">
                                     <Calendar
                                     mode="single"
-                                    selected={values.ticketStartDate}
+                                    selected={values[ticketStartDate]}
                                     onSelect={(date) => date && handleDateSelect(ticketStartDate, date)}
                                     initialFocus
                                     />
@@ -189,8 +192,10 @@ const FreeTicket: React.FC<Pick<IEvent, 'ticketName' | 'qty' | 'ticketDescriptio
                                     <Button
                                     className="w-full bg-white text-black relative flex items-center justify-between border border-black rounded-lg h-[2.9rem] mt-2 hover:bg-white"
                                     >
-                                      <div className="w-full flex items-center justify-start mt-4">
-                                        <p className="font-normal">{values.ticketEndDate ? format(values.ticketEndDate, "PPP") : <span></span>}</p>
+                                      <div className="w-full flex items-center justify-start mt-1">
+                                        <p className="font-normal">{values[ticketEndDate] 
+                                          ? format(new Date(values[ticketEndDate]), "PPP") 
+                                          : ""}</p>
                                       </div>
                                       <div className="w-full flex items-center justify-end ">
                                         <CalendarIcon />
@@ -200,7 +205,7 @@ const FreeTicket: React.FC<Pick<IEvent, 'ticketName' | 'qty' | 'ticketDescriptio
                                 <PopoverContent className="w-auto p-0" align="start">
                                     <Calendar
                                     mode="single"
-                                    selected={values.ticketEndDate}
+                                    selected={values[ticketEndDate]}
                                     onSelect={(date) => date && handleDateSelect(ticketEndDate, date)}
                                     initialFocus
                                     />
@@ -211,8 +216,9 @@ const FreeTicket: React.FC<Pick<IEvent, 'ticketName' | 'qty' | 'ticketDescriptio
                             <div className="w-full relative">
                               <label className="text-sm border border-black rounded-full px-2 absolute top-0 z-10 bg-white left-2">end time</label>
                               <TimePicker 
-                                value={values.ticketEndTime ? dayjs(values.ticketEndTime, formatTime) : dayjs('00:00', formatTime)}
+                                value={values.ticketStartTime ? dayjs(values.ticketStartTime, formatTime) : dayjs('00:00', formatTime)}
                                 onChange={handleEndTimeChange}
+                                format={formatTime} 
                                 className="w-full relative flex items-center border border-black rounded-lg h-[2.9rem] px-4 py-2.5 focus-within:border-b-4 focus-within:border-r-4 focus-within:shadow-none focus-within:border-black hover:border-black mt-2 font-sans font-normal"/>
                             </div>
                         </div>

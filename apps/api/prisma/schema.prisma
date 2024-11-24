@@ -83,7 +83,7 @@ model LegalInfo {
 model Event{
   id Int @id @default(autoincrement())
   name String
-  image String
+  image String @db.Text
   startDate DateTime @db.Date
   endDate DateTime @db.Date
   startTime DateTime @db.Time
@@ -115,11 +115,11 @@ model EventTicket {
   ticketName String
   qty Int
   price Int?  
-  ticketDescription String
-  ticketStartDate DateTime
-  ticketEndDate DateTime
-  ticketStartTime DateTime
-  ticketEndTime DateTime
+  ticketDescription String 
+  ticketStartDate DateTime @db.Date
+  ticketEndDate DateTime @db.Date
+  ticketStartTime DateTime @db.Time
+  ticketEndTime DateTime @db.Time
 
   eventId Int @default(0)
   event Event @relation(fields: [eventId], references: [id])
@@ -133,16 +133,18 @@ model EventTicket {
 
 model Transaction {
   id Int @id @default(autoincrement())
-  orderNumber String @unique
+  orderNumber String @unique @default(uuid())
   totalPrice Int
+  midtrans_token String @default("")
 
   eventId Int 
   event Event @relation(fields: [eventId], references: [id]) 
   userId String 
   user User @relation(fields: [userId], references: [id])
+   transactionStatusId Int    
+  transactionStatus  TransactionStatus    @relation(fields: [transactionStatusId], references: [id])
 
   transactionDetail TransactionDetail[]
-  transactionStatus TransactionStatus[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -168,22 +170,15 @@ model TransactionDetail {
 
 model TransactionStatus {
   id Int @id @default(autoincrement())
-  status Status
+  status String
 
-  transactionId Int
-  transaction Transaction @relation(fields: [transactionId], references: [id])
+  transaction Transaction[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   deletedAt DateTime?
 
   @@map("transaction_status")
-}
-
-enum Status {
-  WAITING_FOR_PAYMENT
-  PAID
-  CANCELLED
 }
 
 model RefferalPoint {
@@ -234,7 +229,6 @@ model Category{
 model Review {
   comments String
   rating Int
-  feedback String
 
   userId String
   user User @relation(fields: [userId], references: [id])
@@ -242,4 +236,5 @@ model Review {
   event Event @relation(fields: [eventId], references: [id])
 
   @@id([userId, eventId])
+  @@map("reviews")
 }
